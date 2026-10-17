@@ -1,0 +1,28 @@
+name: Build Coconut Missile Game
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:   # اجرای دستی از تب Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create game zip
+        run: |
+          mkdir -p artifact
+          cp index.html style.css game.js artifact/
+          cd artifact
+          zip -r ../coconut-missile-game.zip .
+
+      - name: Upload game artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coconut-missile-game
+          path: coconut-missile-game.zip
+          retention-days: 30
